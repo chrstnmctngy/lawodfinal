@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'consumeraccount.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyMarketplaceLanding());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyMarketplaceLanding extends StatelessWidget {
+  const MyMarketplaceLanding({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +43,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MarketPlaceLanding extends StatelessWidget {
-  static const IconData homeWorkOutlined =
-      IconData(0xf109, fontFamily: 'Proxima');
-
+class MarketPlaceLanding extends StatefulWidget {
   const MarketPlaceLanding({super.key});
+
+  @override
+  State<MarketPlaceLanding> createState() => _MarketPlaceLandingState();
+}
+
+class _MarketPlaceLandingState extends State<MarketPlaceLanding> {
+  late String returnedData = '';
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +104,7 @@ class MarketPlaceLanding extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const Padding(
-                  padding: EdgeInsets.only(
-                      right: 30, left: 30),
+                  padding: EdgeInsets.only(right: 30, left: 30),
                   child: Text(
                     'From Sea to Table: Empowering Fisherfolks and Satisfying Seafood Cravings',
                     textAlign: TextAlign.center,
@@ -112,19 +116,21 @@ class MarketPlaceLanding extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50),
-                // Fishing Updates Button
                 SizedBox(
                   width: 300,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                    
+                    },
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: const BorderSide(color: Color.fromRGBO(25, 109, 255, 1)),
+                          side: const BorderSide(
+                              color: Color.fromRGBO(25, 109, 255, 1)),
                         ),
                       ),
                     ),
@@ -140,15 +146,23 @@ class MarketPlaceLanding extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Start Chat Button
                 SizedBox(
                   width: 300,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                       var result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyConsumerAccount()),
+                      );
+                      setState(() {
+                        returnedData = result;
+                      });
+                    },
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(const Color.fromRGBO(25, 109, 255, 1)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromRGBO(25, 109, 255, 1)),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -157,7 +171,7 @@ class MarketPlaceLanding extends StatelessWidget {
                     ),
                     child: const Text(
                       'Buy Fish',
-                       style: TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Proxima',

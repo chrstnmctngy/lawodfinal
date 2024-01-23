@@ -2,26 +2,30 @@ import 'package:flutter/material.dart';
 import 'marketplacelanding.dart';
 import 'categories.dart';
 
-class MyConsumerAccount extends StatelessWidget {
-  const MyConsumerAccount({super.key});
+void main() => runApp(const MyCart());
+
+String returnedData = '';
+
+class MyCart extends StatelessWidget {
+  const MyCart({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ConsumerAccount(),
+      home: Cart(),
     );
   }
 }
 
-class ConsumerAccount extends StatefulWidget {
-  const ConsumerAccount({super.key});
+class Cart extends StatefulWidget {
+  const Cart({super.key});
 
   @override
-  State<ConsumerAccount> createState() => _ConsumerAccountState();
+  State<Cart> createState() => _CartState();
 }
 
-class _ConsumerAccountState extends State<ConsumerAccount> {
+class _CartState extends State<Cart> {
   String? selectedIdType;
 
   String returnedData = '';

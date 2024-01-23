@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'marketplacelanding.dart';
 import 'categories.dart';
 
-class MyConsumerAccount extends StatelessWidget {
-  const MyConsumerAccount({super.key});
+void main() => runApp(const MyCredit());
+
+class MyCredit extends StatelessWidget {
+  const MyCredit({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ConsumerAccount(),
+      home: Credit(),
     );
   }
 }
 
-class ConsumerAccount extends StatefulWidget {
-  const ConsumerAccount({super.key});
+class Credit extends StatefulWidget {
+  const Credit({super.key});
 
   @override
-  State<ConsumerAccount> createState() => _ConsumerAccountState();
+  State<Credit> createState() => _CreditState();
 }
 
-class _ConsumerAccountState extends State<ConsumerAccount> {
-  String? selectedIdType;
-
+class _CreditState extends State<Credit> {
   String returnedData = '';
 
   @override
@@ -32,7 +32,7 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          padding: const EdgeInsets.only(top: 15),
+          padding: const EdgeInsets.only(top: 5, left: 15, bottom: 5),
           icon: const Icon(Icons.arrow_back_ios, size: 20.0),
           onPressed: () async {
             var result = await Navigator.push(
@@ -46,35 +46,29 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
           },
           color: const Color.fromRGBO(79, 79, 79, 1),
         ),
+        titleSpacing: -10,
+        title: const Padding(
+          padding: EdgeInsets.only(),
+          child: Text(
+            'Delivery',
+            style: TextStyle(
+              color: Color.fromRGBO(25, 109, 255, 1),
+              fontFamily: 'Proxima',
+              fontWeight: FontWeight.w700,
+              fontSize: 34,
+            ),
+          ),
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Consumer Account',
-                style: TextStyle(
-                  color: Color.fromRGBO(25, 109, 255, 1),
-                  fontFamily: 'Proxima',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 34,
-                ),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                'Reel in the best deals from local fishers!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Proxima',
-                  color: Color.fromRGBO(79, 79, 79, 1),
-                  fontSize: 17,
-                ),
-              ),
               const SizedBox(height: 60),
               SizedBox(
                 width: 300,
@@ -84,42 +78,11 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    labelText: 'Address',
+                    labelText: 'Name of Customer',
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: 300,
-                height: 60,
-                child: DropdownButtonFormField<String>(
-                  value: selectedIdType,
-                  decoration: InputDecoration(
-                    hintText: 'Valid Identification Card',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  items: <String>[
-                    'Driver\'s License',
-                    'Passport',
-                    'ID Card',
-                    'Others'
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    // Handle dropdown value change
-                    setState(() {
-                      selectedIdType = value;
-                    });
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               SizedBox(
                 width: 300,
                 height: 60,
@@ -128,7 +91,83 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    labelText: 'ID Number',
+                    labelText: 'Mobile Number',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 300,
+                height: 60,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    labelText: 'Landmark',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 300,
+                height: 60,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    labelText: 'Block/Lot, Zone, Street, and Barangay',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 300,
+                height: 60,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    labelText: 'Municipality',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: 300,
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    var result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyCategories()),
+                    );
+                    setState(() {
+                      returnedData = result;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromRGBO(255, 255, 255, 1)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(
+                            color: Color.fromRGBO(25, 109, 255, 1)),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'MyCredit/Debit',
+                    style: TextStyle(
+                      color: Color.fromRGBO(25, 109, 255, 1),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Proxima',
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -157,7 +196,7 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
                     ),
                   ),
                   child: const Text(
-                    'Create Account',
+                    'Cash on Delivery',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,

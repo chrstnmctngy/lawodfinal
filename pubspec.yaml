@@ -64,9 +64,23 @@ flutter:
      - assets/background.png
      - assets/marketplace.png
      - assets/cartlogo.png
-     - assets/accountbtn.png
-     - assets/marketplacebtn.png
-     - assets/communitybtn.png
+     - assets/bottomnav/accountbtn.png
+     - assets/bottomnav/marketplacebtn.png
+     - assets/bottomnav/communitybtn.png
+     - assets/categories/electronics.png
+     - assets/categories/equipment.png
+     - assets/categories/fish.png
+     - assets/categories/gears.png
+     - assets/categories/processed.png
+     - assets/categories/shellfish.png
+     - assets/fish/bangus.png
+     - assets/fish/bodboron.png
+     - assets/fish/bulinaw.png
+     - assets/fish/tangigue.png
+     - assets/fish/tilapia.png
+     - assets/fish/tuna.png
+     - assets/cart.png
+     - assets/check.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
