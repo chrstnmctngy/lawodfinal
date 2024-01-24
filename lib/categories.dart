@@ -102,7 +102,6 @@ class _CategoriesState extends State<Categories> {
           IconButton(
             padding: const EdgeInsets.only(top: 5, right: 15, bottom: 5),
             onPressed: () {
-              // Handle icon press
             },
             icon: Image.asset(
               'assets/cartlogo.png',

@@ -1,69 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'categories.dart';
+import 'fish.dart';
+import 'addedtocart.dart';
 
-void main() => runApp(const MyFish());
-
-class MyFish extends StatelessWidget {
-  const MyFish({Key? key}) : super(key: key);
+class MyItem extends StatelessWidget {
+  const MyItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Fish(),
+      home: Item(),
     );
   }
 }
 
-class Fish extends StatefulWidget {
-  const Fish({Key? key}) : super(key: key);
+class Item extends StatefulWidget {
+  const Item({Key? key}) : super(key: key);
 
   @override
-  State<Fish> createState() => _FishState();
+  State<Item> createState() => _ItemState();
 }
 
-class _FishState extends State<Fish> {
-  String? selectedIdType;
-  int _currentIndex = 0;
-
+class _ItemState extends State<Item> {
+  int _quantity = 1;
+  int _availableQuantity = 10;
+  int _rating = 0;
   String returnedData = '';
 
-  List<Map<String, String>> fishproducts = [
-    {
-      'productName': 'Bangus',
-      'pricePerKilo': '₱ 150/kilo',
-    },
-    {
-      'productName': 'Tilapia',
-      'pricePerKilo': '₱ 180/kilo',
-    },
-    {
-      'productName': 'Bodboron',
-      'pricePerKilo': '₱ 250/kilo',
-    },
-    {
-      'productName': 'Tangigue',
-      'pricePerKilo': '₱ 350/kilo',
-    },
-    {
-      'productName': 'Bulinaw',
-      'pricePerKilo': '₱ 80/kilo',
-    },
-    {
-      'productName': 'Tuna',
-      'pricePerKilo': '₱ 450/kilo',
-    },
-  ];
-
-  final List<String> fishImages = [
-    'assets/fish/bangus.png',
-    'assets/fish/tilapia.png',
-    'assets/fish/bodboron.png',
-    'assets/fish/tangigue.png',
-    'assets/fish/bulinaw.png',
-    'assets/fish/tuna.png',
-  ];
+  Map<String, dynamic> orderDetails = {
+    'images': [
+      'https://drive.google.com/uc?export=view&id=1g7L3TM13_C05HKLNKXDbSkitobMc_-ov',
+      'https://drive.google.com/uc?export=view&id=1xEDEFW_GDtPycbWw8UiUEnBfDL3q_vOH',
+    ],
+    'items': [
+      {'name': 'Bangus', 'quantity': '1/2 kl.', 'price': '₱ 75'},
+      {'name': 'Tilapia', 'quantity': '2 kls.', 'price': '₱ 360'},
+    ],
+    'totalPrice': '₱ 435',
+    'paymentMethod': 'Cash on Delivery',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +51,7 @@ class _FishState extends State<Fish> {
           onPressed: () async {
             var result = await Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MyCategories()),
+              MaterialPageRoute(builder: (context) => const MyFish()),
             );
             setState(() {
               returnedData = result;
@@ -88,7 +63,7 @@ class _FishState extends State<Fish> {
         title: const Padding(
           padding: EdgeInsets.only(),
           child: Text(
-            'Fish',
+            'Bangus',
             style: TextStyle(
               color: Color.fromRGBO(25, 109, 255, 1),
               fontFamily: 'Proxima',
@@ -101,7 +76,6 @@ class _FishState extends State<Fish> {
           IconButton(
             padding: const EdgeInsets.only(top: 5, right: 15, bottom: 5),
             onPressed: () {
-              // Handle icon press
             },
             icon: Image.asset(
               'assets/cartlogo.png',
@@ -111,140 +85,263 @@ class _FishState extends State<Fish> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DropdownButton<String>(
-                  padding: const EdgeInsets.only(left: 15),
-                  value: selectedIdType,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedIdType = newValue;
-                      // Add your logic for sorting here
-                    });
-                  },
-                  items: ['Ascending Price', 'Descending Price']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  hint: const Text('Sort'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 20, left: 20, right: 20),
+              child: Container(
+                color: const Color.fromRGBO(224, 236, 248, 1),
+                padding: const EdgeInsets.all(4),
+                child: const Text(
+                  'New',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color.fromRGBO(24, 119, 242, 1),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                DropdownButton<String>(
-                  onChanged: (String? newValue) {
-                    // Add your logic for filtering here
-                  },
-                  items: ['Filter']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  hint: const Text('Filter'),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: SizedBox(
+                height: 200,
+                child: Stack(
+                  children: [
+                    PageView.builder(
+                      itemCount: orderDetails['images'].length,
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.network(
+                            orderDetails['images'][index],
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+              child: Text(
+                '₱ 150/kilo',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF196DFF),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20,
+              ),
+              child: RatingStars(
+                rating: _rating,
+                onRatingChanged: (newRating) {
+                  setState(() {
+                    _rating = newRating;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Quantity:'),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          if (_quantity > 1) {
+                            setState(() {
+                              _quantity--;
+                              _availableQuantity++;
+                            });
+                          }
+                        },
+                      ),
+                      Text('$_quantity'),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          if (_availableQuantity > 0) {
+                            setState(() {
+                              _quantity++;
+                              _availableQuantity--;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  Text('Available: $_availableQuantity'),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const CircleAvatar(
+                  radius: 35,
+                  backgroundImage: AssetImage('assets/item/profile.png'),
+                ),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gaga\'s Item Market',
+                    ),
+                    Text('Active Status'),
+                    Text('Location'),
+                    Text('Products: 10    Rating: 4.9'),
+                  ],
+                ),
+                Image.asset(
+                  'assets/item/chat.png',
+                  width: 73,
+                  height: 73,
                 ),
               ],
             ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 1 / 1.2,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.grey,
               ),
-              itemCount: fishproducts.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(11, 0, 0, 0),
-                          spreadRadius: 0,
-                          blurRadius: 40,
-                          offset: Offset(8, 0),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 16, top: 12, right: 16),
-                          child: Container(
-                            height: 120,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(fishImages[index]),
-                              ),
-                            ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Description:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Guaranteed fresh and quality'),
+                  SizedBox(height: 8),
+                  Text('Delivery:'),
+                  Text('Delivery days: Monday to Sunday.'),
+                  Text('Available within Alubijid to Opol'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 170,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: ()async {
+                       var result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyAddedToCart()),
+                      );
+                      setState(() {
+                        returnedData = result;
+                      });
+                    },
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(0),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(20),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, left: 16),
-                          child: Text(
-                            fishproducts[index]['productName']!,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, left: 16),
-                          child: Text(
-                            fishproducts[index]['pricePerKilo']!,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF196DFF),
-                            ),
-                          ),
-                        ),
-                      ],
+                        backgroundColor: Colors.white,
+                        side: const BorderSide(
+                            color: Color.fromRGBO(25, 109, 255, 1)),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/item/cart.png',
+                              width: 20, height: 20),
+                          const SizedBox(width: 8),
+                          const Text('Add to Cart',
+                              style: TextStyle(
+                                  color: Color.fromRGBO(25, 109, 255, 1))),
+                        ],
+                      ),
                     ),
                   ),
-                );
-              },
+                  SizedBox(
+                    width: 170,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(0),
+                            topRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(0),
+                          ),
+                        ),
+                        backgroundColor: const Color.fromRGBO(25, 109, 255, 1),
+                      ),
+                      child: const Text(
+                        'Buy Now',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _currentIndex,
-        height: 60.0,
-        items: <Widget>[
-          Image.asset('assets/bottomnav/communitybtn.png',
-              width: 30, height: 30, color: Colors.white),
-          Image.asset('assets/bottomnav/marketplacebtn.png',
-              width: 30, height: 30, color: Colors.white),
-          Image.asset('assets/bottomnav/accountbtn.png',
-              width: 30, height: 30, color: Colors.white),
-        ],
-        color: const Color(0xFFE0ECF8),
-        backgroundColor: Colors.transparent,
-        buttonBackgroundColor: Colors.blue,
-        animationDuration: const Duration(milliseconds: 300),
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+    );
+  }
+}
+
+class RatingStars extends StatelessWidget {
+  final int rating;
+  final ValueChanged<int> onRatingChanged;
+
+  const RatingStars(
+      {super.key, required this.rating, required this.onRatingChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        5,
+        (index) => GestureDetector(
+          onTap: () {
+            onRatingChanged(index + 1);
+          },
+          child: Icon(
+            Icons.star,
+            color: index < rating ? Colors.amber : Colors.grey,
+          ),
+        ),
       ),
     );
   }

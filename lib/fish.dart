@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'categories.dart';
+import 'item.dart';
 
 void main() => runApp(const MyFish());
 
@@ -101,7 +102,6 @@ class _FishState extends State<Fish> {
           IconButton(
             padding: const EdgeInsets.only(top: 5, right: 15, bottom: 5),
             onPressed: () {
-              // Handle icon press
             },
             icon: Image.asset(
               'assets/cartlogo.png',
@@ -125,7 +125,6 @@ class _FishState extends State<Fish> {
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedIdType = newValue;
-                      // Add your logic for sorting here
                     });
                   },
                   items: ['Ascending Price', 'Descending Price']
@@ -139,7 +138,6 @@ class _FishState extends State<Fish> {
                 ),
                 DropdownButton<String>(
                   onChanged: (String? newValue) {
-                    // Add your logic for filtering here
                   },
                   items: ['Filter']
                       .map<DropdownMenuItem<String>>((String value) {
@@ -165,7 +163,16 @@ class _FishState extends State<Fish> {
               itemCount: fishproducts.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                       var result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyItem()),
+                      );
+                      setState(() {
+                        returnedData = result;
+                      });
+                    },
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
