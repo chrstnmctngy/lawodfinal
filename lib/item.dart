@@ -22,7 +22,7 @@ class Item extends StatefulWidget {
 }
 
 class _ItemState extends State<Item> {
-  int _quantity = 1;
+  int _quantity = 0;
   int _availableQuantity = 10;
   int _rating = 0;
   String returnedData = '';
@@ -163,7 +163,7 @@ class _ItemState extends State<Item> {
                       IconButton(
                         icon: const Icon(Icons.remove),
                         onPressed: () {
-                          if (_quantity > 1) {
+                          if (_quantity >= 1) {
                             setState(() {
                               _quantity--;
                               _availableQuantity++;
@@ -175,7 +175,7 @@ class _ItemState extends State<Item> {
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () {
-                          if (_availableQuantity > 0) {
+                          if (_availableQuantity >= 1) {
                             setState(() {
                               _quantity++;
                               _availableQuantity--;
@@ -238,8 +238,8 @@ class _ItemState extends State<Item> {
                   Text('Guaranteed fresh and quality'),
                   SizedBox(height: 8),
                   Text('Delivery:'),
-                  Text('Delivery days: Monday to Sunday.'),
-                  Text('Available within Alubijid to Opol'),
+                  Text('-Delivery days: Monday to Sunday.'),
+                  Text('-Available within Alubijid to Opol'),
                 ],
               ),
             ),
